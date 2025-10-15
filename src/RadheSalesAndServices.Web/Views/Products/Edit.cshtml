@@ -1,0 +1,20 @@
+@model RadheSalesAndServices.Web.Models.Product
+@{
+    ViewData["Title"] = "Edit Product";
+}
+
+<h1 class="h3 mb-4">Edit Product</h1>
+
+<form asp-action="Edit" class="card shadow-sm p-4">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+    @Html.Partial("_ProductForm", Model)
+    <div class="mt-4 d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Update</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

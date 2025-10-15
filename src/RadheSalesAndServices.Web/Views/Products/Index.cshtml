@@ -1,0 +1,50 @@
+@model IEnumerable<RadheSalesAndServices.Web.Models.Product>
+@{
+    ViewData["Title"] = "Products";
+}
+
+<div class="action-toolbar">
+    <h1 class="h3 mb-0">Products</h1>
+    <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Add Product</a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped align-middle">
+                <thead>
+                    <tr>
+                        <th>SKU</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th>Reorder</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Sku</td>
+                            <td>@item.Name</td>
+                            <td>@item.Category?.Name</td>
+                            <td>₹@item.UnitPrice.ToString("N0")</td>
+                            <td>
+                                <span class="badge @(item.StockQuantity <= item.ReorderLevel ? "badge-low-stock" : "bg-success")">
+                                    @item.StockQuantity
+                                </span>
+                            </td>
+                            <td>@item.ReorderLevel</td>
+                            <td class="text-end">
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

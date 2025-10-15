@@ -1,0 +1,89 @@
+@model RadheSalesAndServices.Web.ViewModels.SaleCreateViewModel
+@{
+    ViewData["Title"] = "Record Sale";
+}
+
+<h1 class="h3 mb-4">Record Sale</h1>
+
+<form asp-action="Create" class="card shadow-sm p-4" data-sale-form>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="mb-3">
+        <label asp-for="CustomerId" class="form-label"></label>
+        <select asp-for="CustomerId" class="form-select" asp-items="Model.Customers">
+            <option value="">Select customer</option>
+        </select>
+        <span asp-validation-for="CustomerId" class="text-danger"></span>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Sale Items</h5>
+            <button class="btn btn-sm btn-outline-primary" data-add-line type="button">Add Item</button>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th style="width:55%">Product</th>
+                            <th style="width:20%">Quantity</th>
+                            <th style="width:15%"></th>
+                        </tr>
+                    </thead>
+                    <tbody data-sale-items>
+                        @for (var i = 0; i < Model.Items.Count; i++)
+                        {
+                            <tr data-sale-row>
+                                <td>
+                                    <select class="form-select" name="Items[@i].ProductId" data-name="Items[__index__].ProductId">
+                                        <option value="">Select product</option>
+                                        @foreach (var option in Model.Products)
+                                        {
+                                            <option value="@option.Value" @(option.Value == Model.Items[i].ProductId.ToString() ? "selected" : string.Empty)>@option.Text</option>
+                                        }
+                                    </select>
+                                </td>
+                                <td>
+                                    <input class="form-control" type="number" name="Items[@i].Quantity" data-name="Items[__index__].Quantity" min="1" value="@Model.Items[i].Quantity" />
+                                </td>
+                                <td class="text-end">
+                                    <button class="btn btn-outline-danger" data-remove-line type="button"><i class="bi bi-x-lg"></i></button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <small class="text-muted">Use the Add Item button to include more products in this sale.</small>
+        </div>
+    </div>
+
+    <div class="mt-4 d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Record Sale</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+
+    <template id="sale-item-template">
+        <tr data-sale-row>
+            <td>
+                <select class="form-select" data-name="Items[__index__].ProductId">
+                    <option value="">Select product</option>
+                    @foreach (var option in Model.Products)
+                    {
+                        <option value="@option.Value">@option.Text</option>
+                    }
+                </select>
+            </td>
+            <td>
+                <input class="form-control" type="number" data-name="Items[__index__].Quantity" min="1" value="1" />
+            </td>
+            <td class="text-end">
+                <button class="btn btn-outline-danger" data-remove-line type="button"><i class="bi bi-x-lg"></i></button>
+            </td>
+        </tr>
+    </template>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
