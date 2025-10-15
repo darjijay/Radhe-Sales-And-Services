@@ -1,0 +1,11 @@
+@model RadheSalesAndServices.Web.Models.ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<h1 class="display-5 text-danger">An error occurred.</h1>
+<p class="lead">Please try again later or contact the administrator if the problem persists.</p>
+@if (Model.ShowRequestId)
+{
+    <p><strong>Request ID:</strong> <code>@Model.RequestId</code></p>
+}
